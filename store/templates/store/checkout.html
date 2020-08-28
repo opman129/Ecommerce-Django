@@ -18,31 +18,34 @@
                 </div>
                 <div id="shipping-info">
                     <hr>
-                    <p>Shipping Information</p>
+                    <p>Shipping Information:</p>
                     <hr>
-                <div class="form-field">
-                    <input class="form-control" type="text" placeholder="Address" name="address">
-                </div>
-                <div class="form-field">
-                    <input class="form-control" type="text" placeholder="City" name="city">
-                </div>
-                <div class="form-field">
-                    <input class="form-control" type="text" placeholder="State" name="state">
-                </div>
-                <div class="form-field">
-                    <input class="form-control" type="text" placeholder="Zipcode" name="zipcode">
-                </div>
-                <div class="form-field">
-                    <input class="form-control" type="text" placeholder="Country" name="country">
-                </div>
-                </div>
-                <br>
+                    <div class="form-field">
+                        <input class="form-control" type="text" placeholder="Address" name="address">
+                    </div>
+                    <div class="form-field">
+                        <input class="form-control" type="text" placeholder="City" name="city">
+                    </div>
+                    <div class="form-field">
+                        <input class="form-control" type="text" placeholder="State" name="state">
+                    </div>
+                    <div class="form-field">
+                        <input class="form-control" type="text" placeholder="Zipcode" name="zipcode">
+                    </div>
+                    <div class="form-field">
+                        <input class="form-control" type="text" placeholder="Country" name="country">
+                    </div>
+                    </div>
+
+                <hr>
                 <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue"/>
             </form>
         </div>
         <br>
         <div class="box-element hidden" id="payment-info">
             <small>Paypal Options</small>
+            <button id="make-payment">Make payment</button>
+            <div id="paypal-button-container"></div>
         </div>
 
     </div>
@@ -53,8 +56,10 @@
                 Back to Cart
             </a>
             <br>
+        
             <h3>Order Summary</h3>
             <br>
+            <hr>
             {% for item in items %}
             <div class="cart-row">
                 <div style="flex: 2;"><img  class="row-image" src="{{item.product.imageURL}}"></div>
@@ -63,10 +68,37 @@
                 <div style="flex: 1;"><p>x{{item.quantity}}</p></div>
             </div>
             {% endfor %}
+            <h5>Items: {{ order.get_cart_items }}</h5>
+            <h5>Total: ${{order.get_cart_total|floatformat:2}}</h5>
         </div>
-        <h5>Items: {{ order.get_cart_items }}</h5>
-        <h5>Total: ${{order.get_cart_total|floatformat:2}}</h5>
     </div>
 </div>
+
+<script type="text/javascript">
+    var shipping = '{{order.shipping}}'
+
+    if (shipping == 'False'){
+         document.getElementById('shipping-info').innerHTML = ''
+    }
+
+    if (user != 'AnonymousUser'){
+         document.getElementById('user-info').innerHTML = ''
+     }
+
+    if (shipping == 'False' && user != 'AnonymousUser'){
+        //Hide entire form if user is logged in and shipping is false
+            document.getElementById('form-wrapper').classList.add("hidden");
+            //Show payment if logged in user wants to buy an item that does not require shipping
+            document.getElementById('payment-info').classList.remove("hidden");
+    }
+
+    var form = document.getElementById('form')
+    form.addEventListener('submit', function(e){
+        e.preventDefault()
+        console.log('Form Submitted...')
+        document.getElementById('form-button').classList.add("hidden");
+        document.getElementById('payment-info').classList.remove("hidden");
+    })
+
 
 {% endblock %}
