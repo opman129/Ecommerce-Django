@@ -3,9 +3,70 @@
 
 
 {% block content %}
- 
-<h3>Checkout</h3>
-<!--<img src="{% static 'images/shopping-cart-png.jpg' %}" />
+<div class="row">
+    <div class="col-lg-6">
+        <div class="box-element" id="form-wrapper">
+            <form id="form">
+                <div id="user-info">
+                   <div class="form-field">
+                        <input required class="form-control" type="text" placeholder="Name" name="name">
+                    </div>
+                    <div class="form-field">
+                        <input required class="form-control" type="email" placeholder="Email" name="email">
+                    </div>
 
--->
+                </div>
+                <div id="shipping-info">
+                    <hr>
+                    <p>Shipping Information</p>
+                    <hr>
+                <div class="form-field">
+                    <input class="form-control" type="text" placeholder="Address" name="address">
+                </div>
+                <div class="form-field">
+                    <input class="form-control" type="text" placeholder="City" name="city">
+                </div>
+                <div class="form-field">
+                    <input class="form-control" type="text" placeholder="State" name="state">
+                </div>
+                <div class="form-field">
+                    <input class="form-control" type="text" placeholder="Zipcode" name="zipcode">
+                </div>
+                <div class="form-field">
+                    <input class="form-control" type="text" placeholder="Country" name="country">
+                </div>
+                </div>
+                <br>
+                <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue"/>
+            </form>
+        </div>
+        <br>
+        <div class="box-element hidden" id="payment-info">
+            <small>Paypal Options</small>
+        </div>
+
+    </div>
+
+    <div class="col-lg-6">
+        <div class="box-element">
+            <a class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190;
+                Back to Cart
+            </a>
+            <br>
+            <h3>Order Summary</h3>
+            <br>
+            {% for item in items %}
+            <div class="cart-row">
+                <div style="flex: 2;"><img  class="row-image" src="{{item.product}}"></div>
+                <div style="flex: 2;"><p>{{item.product.name}}</p></div>
+                <div style="flex: 1;"><p>${{item.product.price|floatformat:2}}</p></div>
+                <div style="flex: 1;"><p>x{{item.quantity}}</p></div>
+            </div>
+            {% endfor %}
+        </div>
+        <h5>Items: {{ order.get_cart_items }}</h5>
+        <h5>Total: ${{order.get_cart_total|floatformat:2}}</h5>
+    </div>
+</div>
+
 {% endblock %}
